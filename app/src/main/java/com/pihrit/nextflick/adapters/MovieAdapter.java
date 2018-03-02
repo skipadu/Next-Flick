@@ -9,11 +9,16 @@ import android.view.ViewGroup;
 
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.interfaces.MovieItemClickListener;
+import com.pihrit.nextflick.model.Movie;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
 
     private final MovieItemClickListener mMovieClickListener;
     private final Context mContext;
+    private List<Movie> mMovies;
 
     public MovieAdapter(@NonNull Context context, MovieItemClickListener clickListener) {
         mContext = context;
@@ -29,13 +34,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
-        // FIXME Just testing to show 20 items to see test data
-        holder.mMoviePosterImageView.setImageResource(R.drawable.ic_movie);
+        Picasso.with(mContext).load(mMovies.get(position).getFullPosterPath()).into(holder.mMoviePosterImageView);
     }
 
     @Override
     public int getItemCount() {
-        // FIXME Just testing to show 20 items to see test data
-        return 20;
+        return mMovies == null ? 0 : mMovies.size();
+    }
+
+    public void setMovies(List<Movie> mMovies) {
+        this.mMovies = mMovies;
     }
 }
