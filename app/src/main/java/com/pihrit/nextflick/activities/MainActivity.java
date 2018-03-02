@@ -1,10 +1,10 @@
 package com.pihrit.nextflick.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.adapters.MovieAdapter;
@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     private RecyclerView mMoviesRecyclerView;
     private MovieAdapter mMovieAdapter;
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     @Override
     public void onMovieItemClick(int itemIndex) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        mToast = Toast.makeText(this, "Item index: " + itemIndex, Toast.LENGTH_LONG);
-        mToast.show();
+        Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        startActivity(detailIntent);
     }
 }
