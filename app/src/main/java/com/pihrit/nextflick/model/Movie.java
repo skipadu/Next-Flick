@@ -1,8 +1,12 @@
 package com.pihrit.nextflick.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Movie {
+public class Movie implements Parcelable {
+    public static final String PARCELABLE_ID = "movie";
     public static final String IMAGE_PATH_START = "http://image.tmdb.org/t/p/w185/";
 
     @SerializedName("id")
@@ -46,6 +50,35 @@ public class Movie {
 
     @SerializedName("vote_average")
     private double voteAverage;
+
+    protected Movie(Parcel in) {
+        id = in.readLong();
+        title = in.readString();
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        voteCount = in.readLong();
+        hasVideo = in.readByte() != 0;
+        popularity = in.readDouble();
+        genreIds = in.createIntArray();
+        backdropPath = in.readString();
+        adultMaterial = in.readByte() != 0;
+        synopsis = in.readString();
+        releaseDate = in.readString();
+        voteAverage = in.readDouble();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -161,5 +194,28 @@ public class Movie {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(title);
+        parcel.writeString(originalTitle);
+        parcel.writeString(posterPath);
+        parcel.writeString(originalLanguage);
+        parcel.writeLong(voteCount);
+        parcel.writeByte((byte) (hasVideo ? 1 : 0));
+        parcel.writeDouble(popularity);
+        parcel.writeIntArray(genreIds);
+        parcel.writeString(backdropPath);
+        parcel.writeByte((byte) (adultMaterial ? 1 : 0));
+        parcel.writeString(synopsis);
+        parcel.writeString(releaseDate);
+        parcel.writeDouble(voteAverage);
     }
 }

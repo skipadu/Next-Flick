@@ -4,4 +4,7 @@
     <string name="movie_detail_synopsis">Synopsis</string>
     <string name="movie_detail_released">Released</string>
     <string name="movie_detail_vote_average">Vote Average</string>
+    <string name="tmdb_date_format">yyyy-MM-dd</string>
+    <string name="vote_average_decimalformat">#.0</string>
+    <string name="vote_average_max">/ 10</string>
 </resources>

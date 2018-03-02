@@ -76,7 +76,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     @Override
     public void onMovieItemClick(int itemIndex) {
+        Movie clickedMovie = mMovieAdapter.getMovieAt(itemIndex);
+
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        detailIntent.putExtra(Movie.PARCELABLE_ID, clickedMovie);
         startActivity(detailIntent);
     }
 }

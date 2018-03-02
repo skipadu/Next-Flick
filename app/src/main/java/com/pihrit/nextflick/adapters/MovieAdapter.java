@@ -45,4 +45,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
     public void setMovies(List<Movie> mMovies) {
         this.mMovies = mMovies;
     }
+
+    public Movie getMovieAt(int itemIndex) {
+        return mMovies.get(itemIndex);
+    }
 }
