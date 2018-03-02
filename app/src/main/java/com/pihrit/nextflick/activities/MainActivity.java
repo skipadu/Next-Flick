@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         mMoviesRecyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movie_grid_column_span_count));
         mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
+        mMoviesRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this, this);
         mMoviesRecyclerView.setAdapter(mMovieAdapter);
     }
