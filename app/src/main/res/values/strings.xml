@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Next Flick</string>
     <string name="movie_poster">Movie poster</string>
+    <string name="movie_detail_synopsis">Synopsis</string>
+    <string name="movie_detail_released">Released</string>
+    <string name="movie_detail_vote_average">Vote Average</string>
 </resources>
