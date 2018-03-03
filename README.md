@@ -20,3 +20,9 @@ This repository is for Android Developer Nanodegree program I'm participating an
 
 ## Links
 * To get rounded images I made custom implementation of the [Picasso.transformation](https://square.github.io/picasso/2.x/picasso/com/squareup/picasso/Transformation.html) with the help of [this post](https://stackoverflow.com/a/26112408/649474) on Stack Overflow.
+
+
+## Screenshots
+<img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/main_popular.png?raw=true" width="200" alt="Main-screen, popular movies"><img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/main_popular_landscape?raw=true" width="400" alt="Main-screen, popular movies, in landscape mode"><img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/main_top_rated.png?raw=true" width="200" alt="Main-screen, top rated movies">
+
+<img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/detail.png?raw=true" width="200" alt="Detail-screen"><img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/detail_landscape.png?raw=true" width="400" alt="Detail-screen in landscape">
