@@ -35,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
         if (callingIntent.hasExtra(Movie.PARCELABLE_ID)) {
             Movie movie = callingIntent.getExtras().getParcelable(Movie.PARCELABLE_ID);
             if (movie != null) {
+                getSupportActionBar().setTitle(movie.getTitle());
                 mTitle.setText(movie.getTitle());
                 mReleasedDate.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
                 mVoteAverage.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
