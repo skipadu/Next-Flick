@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private static final String TMDB_URL_BASE = "http://api.themoviedb.org";
     private RecyclerView mMoviesRecyclerView;
     private MovieAdapter mMovieAdapter;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +65,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     mMovieAdapter.notifyDataSetChanged();
 
                 } else {
-                    // FAIL
+                    mToast = Toast.makeText(MainActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
+                    mToast.show();
                 }
             }
 
             @Override
             public void onFailure(Call<TmdbJsonResponse> call, Throwable t) {
-
+                mToast = Toast.makeText(MainActivity.this, R.string.error_failed_to_get_response_from_api, Toast.LENGTH_LONG);
+                mToast.show();
             }
         });
     }

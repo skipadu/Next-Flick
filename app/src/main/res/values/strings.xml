@@ -7,4 +7,6 @@
     <string name="tmdb_date_format">yyyy-MM-dd</string>
     <string name="vote_average_decimalformat">#.0</string>
     <string name="vote_average_max">/ 10</string>
+    <string name="error_response_from_api_not_successful">Response from the Tmdb API was not successful.</string>
+    <string name="error_failed_to_get_response_from_api">Failde to get response from the Tmdb API</string>
 </resources>
