@@ -4,31 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <ImageView
+        android:id="@+id/iv_grid_movie_poster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/movie_poster_offset"
         android:layout_marginEnd="@dimen/movie_poster_offset"
         android:layout_marginStart="@dimen/movie_poster_offset"
         android:layout_marginTop="@dimen/movie_poster_offset"
-        app:cardCornerRadius="@dimen/movie_poster_corner_radius"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/movie_poster"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_grid_movie_poster"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/movie_poster"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.v7.widget.CardView>
-
+        app:layout_constraintEnd_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

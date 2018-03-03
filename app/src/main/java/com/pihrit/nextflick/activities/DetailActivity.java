@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.model.Movie;
 import com.pihrit.nextflick.utils.DetailUtils;
+import com.pihrit.nextflick.views.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
@@ -38,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
                 mReleasedDate.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
                 mVoteAverage.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
                 mSynopsis.setText(movie.getSynopsis());
-                Picasso.with(this).load(movie.getFullPosterPath()).into(mMoviePoster);
+                Picasso.with(this).load(movie.getFullPosterPath()).transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius))).into(mMoviePoster);
             }
         }
     }

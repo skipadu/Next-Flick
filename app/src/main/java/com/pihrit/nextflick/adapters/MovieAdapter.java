@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.interfaces.MovieItemClickListener;
 import com.pihrit.nextflick.model.Movie;
+import com.pihrit.nextflick.views.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
-        Picasso.with(mContext).load(mMovies.get(position).getFullPosterPath()).into(holder.mMoviePosterImageView);
+        Picasso.with(mContext).load(mMovies.get(position).getFullPosterPath()).transform(new RoundedTransformation(mContext.getResources().getInteger(R.integer.movie_poster_corner_radius))).into(holder.mMoviePosterImageView);
     }
 
     @Override
