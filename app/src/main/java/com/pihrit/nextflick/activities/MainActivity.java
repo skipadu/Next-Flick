@@ -2,6 +2,7 @@ package com.pihrit.nextflick.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         call.enqueue(new Callback<TmdbJsonResponse>() {
             @Override
-            public void onResponse(Call<TmdbJsonResponse> call, Response<TmdbJsonResponse> response) {
+            public void onResponse(@NonNull Call<TmdbJsonResponse> call, @NonNull Response<TmdbJsonResponse> response) {
                 if (response.isSuccessful()) {
                     TmdbJsonResponse jsonResponse = response.body();
                     List<Movie> movies = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             }
 
             @Override
-            public void onFailure(Call<TmdbJsonResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<TmdbJsonResponse> call, @NonNull Throwable t) {
                 mToast = Toast.makeText(MainActivity.this, R.string.error_failed_to_get_response_from_api, Toast.LENGTH_LONG);
                 mToast.show();
             }

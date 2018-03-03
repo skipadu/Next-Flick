@@ -10,7 +10,7 @@ import com.pihrit.nextflick.interfaces.MovieItemClickListener;
 class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     final ImageView mMoviePosterImageView;
-    final MovieItemClickListener mMovieClickListener;
+    private final MovieItemClickListener mMovieClickListener;
 
     public MovieAdapterViewHolder(View v, MovieItemClickListener clickListener) {
         super(v);
