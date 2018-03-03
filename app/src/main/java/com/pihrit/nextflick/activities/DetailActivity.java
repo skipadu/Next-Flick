@@ -8,13 +8,8 @@ import android.widget.TextView;
 
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.model.Movie;
+import com.pihrit.nextflick.utils.DetailUtils;
 import com.squareup.picasso.Picasso;
-
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -40,31 +35,11 @@ public class DetailActivity extends AppCompatActivity {
             Movie movie = callingIntent.getExtras().getParcelable(Movie.PARCELABLE_ID);
             if (movie != null) {
                 mTitle.setText(movie.getTitle());
-                mReleasedDate.setText(getDateFormattedByLocale(movie.getReleaseDate()));
-                mVoteAverage.setText(getVoteAverageStr(movie.getVoteAverage()));
+                mReleasedDate.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
+                mVoteAverage.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
                 mSynopsis.setText(movie.getSynopsis());
                 Picasso.with(this).load(movie.getFullPosterPath()).into(mMoviePoster);
             }
         }
-    }
-
-    private String getDateFormattedByLocale(String dateStr) {
-        String formattedDateStr = dateStr;
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.tmdb_date_format));
-        Date date;
-        try {
-            date = sdf.parse(formattedDateStr);
-            formattedDateStr = DateFormat.getDateInstance(DateFormat.SHORT).format(date);
-        } catch (ParseException e) {
-            // In case of exception, we are returning the date in form that we acquired it from the API
-        }
-        return formattedDateStr;
-    }
-
-    private String getVoteAverageStr(double voteAverage) {
-        StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat(getString(R.string.vote_average_decimalformat));
-        sb.append(df.format(voteAverage)).append(getString(R.string.vote_average_max));
-        return sb.toString();
     }
 }
