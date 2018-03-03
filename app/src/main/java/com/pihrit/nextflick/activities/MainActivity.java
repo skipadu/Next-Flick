@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.adapters.MovieAdapter;
+import com.pihrit.nextflick.enums.SelectedFilter;
 import com.pihrit.nextflick.interfaces.MovieItemClickListener;
 import com.pihrit.nextflick.interfaces.TmdbApi;
 import com.pihrit.nextflick.model.Movie;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private RecyclerView mMoviesRecyclerView;
     private MovieAdapter mMovieAdapter;
     private Toast mToast;
+    private SelectedFilter mSelectedFilter = SelectedFilter.POPULAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 .build();
 
         TmdbApi tmdbApiRequest = rf.create(TmdbApi.class);
-        Call<TmdbJsonResponse> call = tmdbApiRequest.getPopularMovies(BuildConfig.TMDB_API_KEY);
+        Call<TmdbJsonResponse> call;
+        if (mSelectedFilter == SelectedFilter.POPULAR) {
+            call = tmdbApiRequest.getPopularMovies(BuildConfig.TMDB_API_KEY);
+        } else if (mSelectedFilter == SelectedFilter.TOP_RATED) {
+            call = tmdbApiRequest.getTopRatedMovies(BuildConfig.TMDB_API_KEY);
+        } else {
+            return;
+        }
+
         call.enqueue(new Callback<TmdbJsonResponse>() {
             @Override
             public void onResponse(Call<TmdbJsonResponse> call, Response<TmdbJsonResponse> response) {
@@ -85,5 +97,28 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         detailIntent.putExtra(Movie.PARCELABLE_ID, clickedMovie);
         startActivity(detailIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filter_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.action_popular) {
+            mSelectedFilter = SelectedFilter.POPULAR;
+            loadMoviesFromAPI();
+            return true;
+        } else if (id == R.id.action_top_rated) {
+            mSelectedFilter = SelectedFilter.TOP_RATED;
+            loadMoviesFromAPI();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
