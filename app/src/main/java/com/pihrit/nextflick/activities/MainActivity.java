@@ -31,7 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     private static final String TMDB_URL_BASE = "http://api.themoviedb.org";
-    private RecyclerView mMoviesRecyclerView;
     private MovieAdapter mMovieAdapter;
     private Toast mToast;
     private SelectedFilter mSelectedFilter = SelectedFilter.POPULAR;
@@ -41,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMoviesRecyclerView = findViewById(R.id.rv_movies);
+        RecyclerView moviesRecyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movie_grid_column_span_count));
-        mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
-        mMoviesRecyclerView.setHasFixedSize(true);
+        moviesRecyclerView.setLayoutManager(gridLayoutManager);
+        moviesRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this, this);
-        mMoviesRecyclerView.setAdapter(mMovieAdapter);
+        moviesRecyclerView.setAdapter(mMovieAdapter);
 
         loadMoviesFromAPI();
     }
