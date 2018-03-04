@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.pihrit.nextflick.activities.DetailActivity">
 
-    <TextView
-        android:id="@+id/tv_detail_title"
-        style="@style/BoldDetailTextView"
-        android:layout_marginEnd="@dimen/margin_default"
-        android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_zero"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cl_top"
-        app:layout_constraintTop_toTopOf="@+id/cl_top"
-        tools:text="Movie Title Goes Here" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_top"
         android:layout_width="wrap_content"
@@ -66,19 +55,45 @@
             tools:text="4.5 / 10" />
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/tv_detail_synopsis_title"
-        style="@style/BoldDetailTextView"
-        android:text="@string/movie_detail_synopsis"
-        app:layout_constraintEnd_toEndOf="@+id/tv_detail_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_detail_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cl_top"
+        app:layout_constraintTop_toTopOf="@id/cl_top">
 
-    <TextView
-        android:id="@+id/tv_detail_synopsis"
-        style="@style/DetailTextView"
-        app:layout_constraintEnd_toEndOf="@+id/tv_detail_synopsis_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_detail_synopsis_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_synopsis_title"
-        tools:text="Synopsis will go here" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_detail_title"
+                style="@style/BoldDetailTextView"
+                android:layout_marginEnd="@dimen/margin_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Movie Title Goes Here" />
+
+            <TextView
+                android:id="@+id/tv_detail_synopsis_title"
+                style="@style/BoldDetailTextView"
+                android:text="@string/movie_detail_synopsis"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
+
+            <TextView
+                android:id="@+id/tv_detail_synopsis"
+                style="@style/DetailTextView"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_synopsis_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_synopsis_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_synopsis_title"
+                tools:text="Synopsis will go here" />
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
