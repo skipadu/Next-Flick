@@ -30,77 +30,61 @@
 
         <TextView
             android:id="@+id/tv_detail_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/BoldDetailTextView"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:textStyle="bold"
+            android:layout_marginTop="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
             app:layout_constraintTop_toTopOf="@+id/iv_detail_poster"
             tools:text="Movie Title Goes Here" />
 
+
         <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:id="@+id/tv_detail_released_title"
+            style="@style/BoldDetailTextView"
             android:text="@string/movie_detail_released"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tv_detail_title"
             app:layout_constraintStart_toStartOf="@+id/tv_detail_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
 
         <TextView
             android:id="@+id/tv_detail_released"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            style="@style/DetailTextView"
+            app:layout_constraintEnd_toEndOf="@+id/tv_detail_released_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_released_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_released_title"
             tools:text="01.02.2018" />
 
         <TextView
-            android:id="@+id/textView6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:id="@+id/tv_detail_vote_average_title"
+            style="@style/BoldDetailTextView"
             android:text="@string/movie_detail_vote_average"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tv_detail_released"
             app:layout_constraintStart_toStartOf="@+id/tv_detail_released"
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_released" />
 
         <TextView
             android:id="@+id/tv_detail_vote_average"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView6"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            style="@style/DetailTextView"
+            app:layout_constraintEnd_toEndOf="@+id/tv_detail_vote_average_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_vote_average_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_vote_average_title"
             tools:text="4.5 / 10" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:id="@+id/tv_detail_synopsis_title"
+        style="@style/BoldDetailTextView"
         android:text="@string/movie_detail_synopsis"
-        android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/cl_top"
         app:layout_constraintTop_toBottomOf="@+id/cl_top" />
 
     <TextView
         android:id="@+id/tv_detail_synopsis"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
+        style="@style/DetailTextView"
         app:layout_constraintEnd_toEndOf="@+id/cl_top"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/tv_detail_synopsis_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detail_synopsis_title"
         tools:text="Synopsis will go here" />
 </android.support.constraint.ConstraintLayout>
