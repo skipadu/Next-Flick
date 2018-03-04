@@ -16,6 +16,7 @@ This repository is for Android Developer Nanodegree program I'm participating an
 ## Libraries
 * [Picasso](http://square.github.io/picasso/) to download images
 * [Retrofit](http://square.github.io/retrofit/) +[Gson Converter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson) to make API requests and converting response to objects
+* [Butter Knife](http://jakewharton.github.io/butterknife/) injecting fields and get rid of multiple **findViewById**
 
 
 ## Links
