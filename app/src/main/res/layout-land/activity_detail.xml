@@ -9,9 +9,9 @@
     <TextView
         android:id="@+id/tv_detail_title"
         style="@style/BoldDetailTextView"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_zero"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_top"
         app:layout_constraintTop_toTopOf="@+id/cl_top"
@@ -21,8 +21,8 @@
         android:id="@+id/cl_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,7 +40,6 @@
         <TextView
             android:id="@+id/tv_detail_released_title"
             style="@style/BoldDetailTextView"
-            android:layout_marginTop="8dp"
             android:text="@string/movie_detail_released"
             app:layout_constraintStart_toStartOf="@+id/iv_detail_poster"
             app:layout_constraintTop_toBottomOf="@+id/iv_detail_poster" />

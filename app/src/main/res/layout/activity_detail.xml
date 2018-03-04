@@ -8,11 +8,11 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_top"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/margin_zero"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,9 +31,9 @@
         <TextView
             android:id="@+id/tv_detail_title"
             style="@style/BoldDetailTextView"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_zero"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
             app:layout_constraintTop_toTopOf="@+id/iv_detail_poster"

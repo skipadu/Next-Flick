@@ -10,7 +10,7 @@
 
     <!-- Custom text styles for the Details-screen -->
     <style name="DetailTextView" parent="@android:style/TextAppearance.Widget.TextView">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">@dimen/margin_zero</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#737373</item>
@@ -21,7 +21,7 @@
     </style>
 
     <style name="BoldDetailTextView" parent="DetailTextView">
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_default</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
     </style>
