@@ -35,7 +35,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
-        Picasso.with(mContext).load(mMovies.get(position).getFullPosterPath()).transform(new RoundedTransformation(mContext.getResources().getInteger(R.integer.movie_poster_corner_radius))).into(holder.mMoviePosterImageView);
+        Picasso.with(mContext).
+                load(mMovies.get(position).getFullPosterPath())
+                .placeholder(R.drawable.movie_placeholder)
+                .error(R.drawable.movie_placeholder_error)
+                .transform(new RoundedTransformation(mContext.getResources().getInteger(R.integer.movie_poster_corner_radius)))
+                .into(holder.mMoviePosterImageView);
     }
 
     @Override

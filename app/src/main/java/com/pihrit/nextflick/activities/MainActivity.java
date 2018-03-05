@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +34,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     private static final String TMDB_URL_BASE = "http://api.themoviedb.org";
+    @BindView(R.id.rv_movies)
+    RecyclerView mMoviesRecyclerView;
+
     private MovieAdapter mMovieAdapter;
     private Toast mToast;
     private SelectedFilter mSelectedFilter = SelectedFilter.POPULAR;
@@ -40,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        RecyclerView moviesRecyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movie_grid_column_span_count));
-        moviesRecyclerView.setLayoutManager(gridLayoutManager);
-        moviesRecyclerView.setHasFixedSize(true);
+        mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
+        mMoviesRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this, this);
-        moviesRecyclerView.setAdapter(mMovieAdapter);
+        mMoviesRecyclerView.setAdapter(mMovieAdapter);
 
         loadMoviesFromAPI();
     }

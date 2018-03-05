@@ -7,20 +7,24 @@ import android.widget.ImageView;
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.interfaces.MovieItemClickListener;
 
-class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-    final ImageView mMoviePosterImageView;
+class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
+
+    @BindView(R.id.iv_grid_movie_poster)
+    ImageView mMoviePosterImageView;
     private final MovieItemClickListener mMovieClickListener;
 
     public MovieAdapterViewHolder(View v, MovieItemClickListener clickListener) {
         super(v);
-        mMoviePosterImageView = v.findViewById(R.id.iv_grid_movie_poster);
+        ButterKnife.bind(this, v);
         mMovieClickListener = clickListener;
-        v.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick
+    public void onClick() {
         mMovieClickListener.onMovieItemClick(getAdapterPosition());
     }
 }

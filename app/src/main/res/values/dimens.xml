@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="movie_poster_offset">4dp</dimen>
+    <dimen name="margin_default">8dp</dimen>
+    <dimen name="margin_zero">0dp</dimen>
 </resources>

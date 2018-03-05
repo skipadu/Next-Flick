@@ -12,29 +12,43 @@ import com.pihrit.nextflick.utils.DetailUtils;
 import com.pihrit.nextflick.views.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
+
+    @BindView(R.id.iv_detail_poster)
+    ImageView mMoviePosterIv;
+    @BindView(R.id.tv_detail_title)
+    TextView mTitleTv;
+    @BindView(R.id.tv_detail_released)
+    TextView mReleasedDateTv;
+    @BindView(R.id.tv_detail_vote_average)
+    TextView mVoteAverageTv;
+    @BindView(R.id.tv_detail_synopsis)
+    TextView mSynopsisTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        ImageView moviePosterIv = findViewById(R.id.iv_detail_poster);
-        TextView titleTv = findViewById(R.id.tv_detail_title);
-        TextView releasedDateTv = findViewById(R.id.tv_detail_released);
-        TextView voteAverageTv = findViewById(R.id.tv_detail_vote_average);
-        TextView synopsisTv = findViewById(R.id.tv_detail_synopsis);
+        ButterKnife.bind(this);
 
         Intent callingIntent = getIntent();
         if (callingIntent.hasExtra(Movie.PARCELABLE_ID)) {
             Movie movie = callingIntent.getExtras().getParcelable(Movie.PARCELABLE_ID);
             if (movie != null) {
                 getSupportActionBar().setTitle(movie.getTitle());
-                titleTv.setText(movie.getTitle());
-                releasedDateTv.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
-                voteAverageTv.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
-                synopsisTv.setText(movie.getSynopsis());
-                Picasso.with(this).load(movie.getFullPosterPath()).transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius))).into(moviePosterIv);
+                mTitleTv.setText(movie.getTitle());
+                mReleasedDateTv.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
+                mVoteAverageTv.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
+                mSynopsisTv.setText(movie.getSynopsis());
+                Picasso.with(this)
+                        .load(movie.getFullPosterPath())
+                        .placeholder(R.drawable.movie_placeholder)
+                        .error(R.drawable.movie_placeholder_error)
+                        .transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius)))
+                        .into(mMoviePosterIv);
             }
         }
     }
