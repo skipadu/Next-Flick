@@ -43,7 +43,12 @@ public class DetailActivity extends AppCompatActivity {
                 mReleasedDateTv.setText(DetailUtils.getDateFormattedByLocale(this, movie.getReleaseDate()));
                 mVoteAverageTv.setText(DetailUtils.getVoteAverageStr(this, movie.getVoteAverage()));
                 mSynopsisTv.setText(movie.getSynopsis());
-                Picasso.with(this).load(movie.getFullPosterPath()).transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius))).into(mMoviePosterIv);
+                Picasso.with(this)
+                        .load(movie.getFullPosterPath())
+                        .placeholder(R.drawable.movie_placeholder)
+                        .error(R.drawable.movie_placeholder_error)
+                        .transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius)))
+                        .into(mMoviePosterIv);
             }
         }
     }
