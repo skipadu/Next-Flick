@@ -13,4 +13,6 @@
     <string name="filter_top_rated">Top rated</string>
     <string name="subtitle_popular_movies">Popular Movies</string>
     <string name="subtitle_top_rated_movies">Top Rated Movies</string>
+    <string name="movie_detail_trailers">Trailers</string>
+    <string name="movie_detail_user_reviews">User reviews</string>
 </resources>

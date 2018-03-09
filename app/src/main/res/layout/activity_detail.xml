@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.pihrit.nextflick.activities.DetailActivity">
 
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -93,5 +92,40 @@
             app:layout_constraintStart_toStartOf="@+id/tv_detail_synopsis_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_synopsis_title"
             tools:text="Synopsis will go here" />
+
+        <TextView
+            android:id="@+id/tv_detail_trailers_title"
+            style="@style/BoldDetailTextView"
+            android:text="@string/movie_detail_trailers"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_synopsis"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_synopsis" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_detail_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_trailers_title"></android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_detail_user_reviews_title"
+            style="@style/BoldDetailTextView"
+            android:text="@string/movie_detail_user_reviews"
+            app:layout_constraintStart_toStartOf="@+id/rv_detail_trailers"
+            app:layout_constraintTop_toBottomOf="@+id/rv_detail_trailers" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_detail_user_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_user_reviews_title"></android.support.v7.widget.RecyclerView>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
