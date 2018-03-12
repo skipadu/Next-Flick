@@ -15,4 +15,6 @@
     <string name="subtitle_top_rated_movies">Top Rated Movies</string>
     <string name="movie_detail_trailers">Trailers</string>
     <string name="movie_detail_user_reviews">User reviews</string>
+    <string name="movie_detail_favoritebutton_like">Like</string>
+    <string name="movie_detail_favoritebutton_unlike">Unlike</string>
 </resources>
