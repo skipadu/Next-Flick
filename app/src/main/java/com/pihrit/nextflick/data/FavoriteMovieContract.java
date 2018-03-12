@@ -8,5 +8,6 @@ public class FavoriteMovieContract {
         public static final String TABLE_NAME = "favorites";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_MOVIE_ID = "movieId";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
     }
 }
