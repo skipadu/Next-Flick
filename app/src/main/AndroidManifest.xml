@@ -23,6 +23,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
+        <provider
+            android:name=".data.FavoriteMovieContentProvider"
+            android:authorities="com.pihrit.nextflick"
+            android:exported="false" />
     </application>
 
 </manifest>
