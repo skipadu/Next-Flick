@@ -2,12 +2,25 @@ package com.pihrit.nextflick.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class FavoriteMovieContentProvider extends ContentProvider {
+    public static final int FAVORITES = 100;
+    public static final int FAVORITE_WITH_ID = 101;
+
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    public static UriMatcher buildUriMatcher() {
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(FavoriteMovieContract.AUTHORITY, FavoriteMovieContract.PATH_FAVORITEMOVIES, FAVORITES);
+        uriMatcher.addURI(FavoriteMovieContract.AUTHORITY, FavoriteMovieContract.PATH_FAVORITEMOVIES + "/#", FAVORITE_WITH_ID);
+        return uriMatcher;
+    }
+
     private FavoriteMovieDbHelper mMovieDbHelper;
 
     @Override
