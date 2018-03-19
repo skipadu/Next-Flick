@@ -2,9 +2,11 @@ package com.pihrit.nextflick.data;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -17,6 +19,9 @@ import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class TestFavoriteMovieContentProvider {
+    private static final Uri TEST_MOVIES = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI;
+    private static final Uri TEST_MOVIE_WITH_ID = TEST_MOVIES.buildUpon().appendPath("1").build();
+
     private final Context mContext = InstrumentationRegistry.getTargetContext();
 
     /**
@@ -49,5 +54,15 @@ public class TestFavoriteMovieContentProvider {
         } catch (PackageManager.NameNotFoundException nnfe) {
             fail("Content provider not registered at " + mContext.getPackageName());
         }
+    }
+
+    @Test
+    public void testUriMatcher() {
+        UriMatcher testMatcher = FavoriteMovieContentProvider.buildUriMatcher();
+
+        assertEquals("Error: The FAVORITES URI was matched incorrectly.", testMatcher.match(TEST_MOVIES), FavoriteMovieContentProvider.FAVORITES);
+        assertEquals("Error: The FAVORITE_WITH_ID URI was matched incorrectly.", testMatcher.match(TEST_MOVIE_WITH_ID), FavoriteMovieContentProvider.FAVORITE_WITH_ID);
+
+
     }
 }
