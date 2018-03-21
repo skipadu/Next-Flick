@@ -9,9 +9,10 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_top"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -54,16 +55,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_vote_average_title"
             tools:text="4.5 / 10" />
 
-        <Button
-            android:id="@+id/btn_favorite"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/iv_btn_favorite"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:drawableTop="@drawable/favorite_movie_empty"
-            android:text="@string/movie_detail_favoritebutton_like"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_vote_average" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_vote_average">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/favorite_movie_empty" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="LIKE"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
 
     <ScrollView

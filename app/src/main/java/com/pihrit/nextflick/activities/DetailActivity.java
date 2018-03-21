@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +32,6 @@ public class DetailActivity extends AppCompatActivity {
     TextView mVoteAverageTv;
     @BindView(R.id.tv_detail_synopsis)
     TextView mSynopsisTv;
-    @BindView(R.id.btn_favorite)
-    Button mFavoriteBtn;
 
     private Movie mMovie;
 
@@ -62,8 +59,8 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     }
-
-    @OnClick(R.id.btn_favorite)
+    
+    @OnClick(R.id.iv_btn_favorite)
     public void onClick() {
         ContentValues cv = new ContentValues();
         cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
