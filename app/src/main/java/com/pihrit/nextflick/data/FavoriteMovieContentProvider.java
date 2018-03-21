@@ -1,9 +1,11 @@
 package com.pihrit.nextflick.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,7 +46,25 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        Uri returnUri;
+
+        switch (match) {
+            case FAVORITES:
+                long id = db.insert(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, null, contentValues);
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException(("Failed to insert new row into " + uri));
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unkown uri: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override
