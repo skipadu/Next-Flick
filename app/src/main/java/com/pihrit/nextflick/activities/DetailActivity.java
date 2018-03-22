@@ -59,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     }
-    
+
     @OnClick(R.id.iv_btn_favorite)
     public void onClick() {
         ContentValues cv = new ContentValues();
