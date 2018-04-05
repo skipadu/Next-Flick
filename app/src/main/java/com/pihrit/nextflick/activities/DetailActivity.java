@@ -58,6 +58,9 @@ public class DetailActivity extends AppCompatActivity {
                         .into(mMoviePosterIv);
             }
         }
+
+        // TODO: if found in favorite, show it also in the UI
+        // get by id
     }
 
     @OnClick(R.id.iv_btn_favorite)
@@ -65,8 +68,16 @@ public class DetailActivity extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
         cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE, mMovie.getTitle());
-
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH, mMovie.getPosterPath());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_COUNT, mMovie.getVoteCount());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_HAS_VIDEO, mMovie.isHasVideo());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_SYNOPSIS, mMovie.getSynopsis());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, mMovie.getReleaseDate());
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVoteAverage());
         Uri uri = getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, cv);
+
+        // FIXME: Just for testing purposes for now
         if (uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }

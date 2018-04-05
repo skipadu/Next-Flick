@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
     public static final String PARCELABLE_ID = "movie";
-    private static final String IMAGE_PATH_START = "http://image.tmdb.org/t/p/w185/";
+    public static final String IMAGE_PATH_START = "http://image.tmdb.org/t/p/w185/";
 
     @SerializedName("id")
     private long id;
@@ -50,6 +50,10 @@ public class Movie implements Parcelable {
 
     @SerializedName("vote_average")
     private double voteAverage;
+
+    public Movie(){
+        //
+    }
 
     protected Movie(Parcel in) {
         id = in.readLong();

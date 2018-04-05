@@ -19,6 +19,14 @@ public class FavoriteMovieDbHelper extends SQLiteOpenHelper {
                 FavoriteMovieContract.FavoriteMovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_COUNT + " INTEGER NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_HAS_VIDEO + " INTEGER DEFAULT(0), " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
+                FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
+
                 FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         sqLiteDatabase.execSQL(SQL_CREATE_FAVORITEMOVIE_TABLE);
