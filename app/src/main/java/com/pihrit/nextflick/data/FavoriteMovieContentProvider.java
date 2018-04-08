@@ -51,7 +51,17 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             case FAVORITE_WITH_ID:
-                throw new UnsupportedOperationException("Not yet implemented!");
+                String id = uri.getPathSegments().get(1);
+                String mSelection = FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?";
+                String[] mSelectionArgs = new String[]{id};
+                retCursor = db.query(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME,
+                        projection,
+                        mSelection,
+                        mSelectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -89,6 +99,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
+
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {

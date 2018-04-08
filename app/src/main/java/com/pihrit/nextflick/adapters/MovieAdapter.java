@@ -108,18 +108,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
     private Movie createMovieFromCursorPosition(int itemIndex) {
         Movie movie = new Movie();
         mCursor.moveToPosition(itemIndex);
-//        int titleIndex = mCursor.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE);
-//        int movieId = mCursor.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID);
-//        int posterIndex = mCursor.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH);
-//        int voteCountIndex = mCursor.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_COUNT);
-//        int hasVideoIndex = mCursor.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_HAS_VIDEO);
-//
-//        //
-//        movie.setTitle(mCursor.getString(titleIndex));
-//        movie.setId(mCursor.getInt(movieId));
-//        movie.setPosterPath(mCursor.getString(posterIndex));
-//        movie.setVoteCount(mCursor.getInt(voteCountIndex));
-
 
         movie.setTitle(getStringFromCursor(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE));
         movie.setId(getIntFromCursor(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));

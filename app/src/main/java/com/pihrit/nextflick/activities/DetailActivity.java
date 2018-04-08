@@ -2,9 +2,16 @@ package com.pihrit.nextflick.activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.iv_detail_poster)
     ImageView mMoviePosterIv;
@@ -33,7 +40,10 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_detail_synopsis)
     TextView mSynopsisTv;
 
+    private static final int FAVORITE_LOADER_ID = 1;
+    private static final String TAG = DetailActivity.class.getSimpleName();
     private Movie mMovie;
+    private Uri mFavoriteUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +66,15 @@ public class DetailActivity extends AppCompatActivity {
                         .error(R.drawable.movie_placeholder_error)
                         .transform(new RoundedTransformation(getResources().getInteger(R.integer.movie_poster_corner_radius)))
                         .into(mMoviePosterIv);
+
+                mFavoriteUri = FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId());
+
+                // TODO: if found in favorite, show it also in the UI
+                // get by id
+                getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
+                // TODO: when async is finished, change the like button state
             }
         }
-
-        // TODO: if found in favorite, show it also in the UI
-        // get by id
     }
 
     @OnClick(R.id.iv_btn_favorite)
@@ -82,5 +96,68 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
         finish();
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle loaderArgs) {
+
+        return new AsyncTaskLoader<Cursor>(this) {
+            Cursor mFavoriteData = null;
+
+            @Nullable
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    Log.v(TAG, "loadInBackground(), mFavoriteUri: " + mFavoriteUri.toString());
+                    return getContentResolver().query(mFavoriteUri,
+                            null,
+                            null,
+                            null,
+                            null);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to load favorite movie in async.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onStartLoading() {
+                if (mFavoriteData != null) {
+                    deliverResult(mFavoriteData);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public void deliverResult(@Nullable Cursor data) {
+                mFavoriteData = data;
+                super.deliverResult(data);
+            }
+        };
+
+
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        // TODO: do binding and stuff here when the loader has finished loading
+        if(mMovie != null) {
+            if(data != null && data.moveToFirst()) {
+                int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
+                Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
+
+            } else {
+                Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");
+            }
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
     }
 }
