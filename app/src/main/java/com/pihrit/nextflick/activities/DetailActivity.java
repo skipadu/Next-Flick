@@ -48,6 +48,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final String TAG = DetailActivity.class.getSimpleName();
     private Movie mMovie;
     private Uri mFavoriteUri;
+    private boolean mIsFavorited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,31 +74,33 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                 mFavoriteUri = FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId());
 
-                // TODO: if found in favorite, show it also in the UI
-                // get by id
                 getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
-                // TODO: when async is finished, change the like button state
             }
         }
     }
 
     @OnClick(R.id.iv_btn_favorite)
     public void onClick() {
-        ContentValues cv = new ContentValues();
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE, mMovie.getTitle());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH, mMovie.getPosterPath());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_COUNT, mMovie.getVoteCount());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_HAS_VIDEO, mMovie.isHasVideo());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_SYNOPSIS, mMovie.getSynopsis());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, mMovie.getReleaseDate());
-        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVoteAverage());
-        Uri uri = getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, cv);
+        if (mIsFavorited) {
+            getContentResolver().delete(FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId()), null, null);
+        } else {
+            //
+            ContentValues cv = new ContentValues();
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TITLE, mMovie.getTitle());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH, mMovie.getPosterPath());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_COUNT, mMovie.getVoteCount());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_HAS_VIDEO, mMovie.isHasVideo());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_SYNOPSIS, mMovie.getSynopsis());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, mMovie.getReleaseDate());
+            cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVoteAverage());
+            Uri uri = getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, cv);
 
-        // FIXME: Just for testing purposes for now
-        if (uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+            // FIXME: Just for testing purposes for now
+            if (uri != null) {
+                Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+            }
         }
         finish();
     }
@@ -147,13 +150,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        // TODO: do binding and stuff here when the loader has finished loading
-        if(mMovie != null) {
-            if(data != null && data.moveToFirst()) {
+        if (mMovie != null) {
+            if (data != null && data.moveToFirst()) {
                 int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
                 Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
                 mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
                 mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
+                mIsFavorited = true;
 
             } else {
                 Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");

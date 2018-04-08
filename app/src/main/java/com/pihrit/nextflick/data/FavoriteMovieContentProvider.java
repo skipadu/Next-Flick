@@ -103,7 +103,24 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int favoritesDeleted;
+
+        switch (match) {
+            case FAVORITE_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                favoritesDeleted = db.delete(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (favoritesDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return favoritesDeleted;
     }
 
     @Override
