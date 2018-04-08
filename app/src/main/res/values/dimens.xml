@@ -3,4 +3,6 @@
     <dimen name="movie_poster_offset">4dp</dimen>
     <dimen name="margin_default">8dp</dimen>
     <dimen name="margin_zero">0dp</dimen>
+    <dimen name="border_width">1dp</dimen>
+    <dimen name="border_radius">4dp</dimen>
 </resources>
