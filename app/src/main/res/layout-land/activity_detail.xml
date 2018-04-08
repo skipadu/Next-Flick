@@ -67,17 +67,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_vote_average">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/iv_favorite_button"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/favorite_movie_empty" />
 
             <TextView
+                android:id="@+id/tv_favorite_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
-                android:text="LIKE"
+                android:text="@string/movie_detail_favoritebutton_like"
                 android:textAlignment="textStart"
                 android:textSize="12sp" />
         </LinearLayout>

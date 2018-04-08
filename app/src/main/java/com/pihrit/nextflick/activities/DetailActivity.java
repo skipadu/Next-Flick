@@ -39,6 +39,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     TextView mVoteAverageTv;
     @BindView(R.id.tv_detail_synopsis)
     TextView mSynopsisTv;
+    @BindView(R.id.iv_favorite_button)
+    ImageView mFavoriteButtonIv;
+    @BindView(R.id.tv_favorite_button)
+    TextView mFavoriteButtonTv;
 
     private static final int FAVORITE_LOADER_ID = 1;
     private static final String TAG = DetailActivity.class.getSimpleName();
@@ -148,9 +152,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             if(data != null && data.moveToFirst()) {
                 int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
                 Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
+                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
+                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
 
             } else {
                 Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");
+                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
+
+                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
             }
 
         }
