@@ -16,16 +16,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.data.FavoriteMovieContract;
+import com.pihrit.nextflick.interfaces.TmdbApi;
 import com.pihrit.nextflick.model.Movie;
+import com.pihrit.nextflick.model.TmdbJsonVideosResponse;
+import com.pihrit.nextflick.model.TrailerVideo;
 import com.pihrit.nextflick.utils.DetailUtils;
 import com.pihrit.nextflick.views.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -43,12 +56,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     ImageView mFavoriteButtonIv;
     @BindView(R.id.tv_favorite_button)
     TextView mFavoriteButtonTv;
+    // TODO recyclerview for trailerVideos & reviews
 
     private static final int FAVORITE_LOADER_ID = 1;
+    private static final int TRAILERVIDEOS_LOADER_ID = 2;
     private static final String TAG = DetailActivity.class.getSimpleName();
     private Movie mMovie;
     private Uri mFavoriteUri;
     private boolean mIsFavorited;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +91,43 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mFavoriteUri = FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId());
 
                 getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
+                getSupportLoaderManager().initLoader(TRAILERVIDEOS_LOADER_ID, null, this);
+                // TODO reviews
             }
         }
+    }
+
+    private void loadTrailers() {
+        Retrofit rf = new Retrofit.Builder()
+                .baseUrl(MainActivity.TMDB_URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TmdbApi tmdpApiRequest = rf.create(TmdbApi.class);
+        Call<TmdbJsonVideosResponse> call = tmdpApiRequest.getVideos(mMovie.getId(), BuildConfig.TMDB_API_KEY);
+
+        call.enqueue(new Callback<TmdbJsonVideosResponse>() {
+            @Override
+            public void onResponse(Call<TmdbJsonVideosResponse> call, Response<TmdbJsonVideosResponse> response) {
+                if (response.isSuccessful()) {
+                    List<TrailerVideo> trailerVideos = new ArrayList<>(Arrays.asList(response.body().getResults()));
+                    // TODO: set trailervideos to trailerVideo adapter
+                    // notifyChane
+
+
+                } else {
+                    mToast = Toast.makeText(DetailActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
+                    mToast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TmdbJsonVideosResponse> call, Throwable t) {
+                mToast = Toast.makeText(DetailActivity.this, R.string.error_failed_to_get_response_from_api, Toast.LENGTH_LONG);
+                mToast.show();
+            }
+        });
+
     }
 
     @OnClick(R.id.iv_btn_favorite)
@@ -108,63 +159,69 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle loaderArgs) {
+        if (id == FAVORITE_LOADER_ID) {
+            return new AsyncTaskLoader<Cursor>(this) {
+                Cursor mFavoriteData = null;
 
-        return new AsyncTaskLoader<Cursor>(this) {
-            Cursor mFavoriteData = null;
-
-            @Nullable
-            @Override
-            public Cursor loadInBackground() {
-                try {
-                    Log.v(TAG, "loadInBackground(), mFavoriteUri: " + mFavoriteUri.toString());
-                    return getContentResolver().query(mFavoriteUri,
-                            null,
-                            null,
-                            null,
-                            null);
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to load favorite movie in async.");
-                    e.printStackTrace();
-                    return null;
+                @Nullable
+                @Override
+                public Cursor loadInBackground() {
+                    try {
+                        Log.v(TAG, "loadInBackground(), mFavoriteUri: " + mFavoriteUri.toString());
+                        return getContentResolver().query(mFavoriteUri,
+                                null,
+                                null,
+                                null,
+                                null);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Failed to load favorite movie in async.");
+                        e.printStackTrace();
+                        return null;
+                    }
                 }
-            }
 
-            @Override
-            protected void onStartLoading() {
-                if (mFavoriteData != null) {
-                    deliverResult(mFavoriteData);
-                } else {
-                    forceLoad();
+                @Override
+                protected void onStartLoading() {
+                    if (mFavoriteData != null) {
+                        deliverResult(mFavoriteData);
+                    } else {
+                        forceLoad();
+                    }
                 }
-            }
 
-            @Override
-            public void deliverResult(@Nullable Cursor data) {
-                mFavoriteData = data;
-                super.deliverResult(data);
-            }
-        };
-
+                @Override
+                public void deliverResult(@Nullable Cursor data) {
+                    mFavoriteData = data;
+                    super.deliverResult(data);
+                }
+            };
+        } else if (id == TRAILERVIDEOS_LOADER_ID) {
+            // TODO:
+        }
+        return null;
 
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (mMovie != null) {
-            if (data != null && data.moveToFirst()) {
-                int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
-                Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
-                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
-                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
-                mIsFavorited = true;
+        if (loader.getId() == FAVORITE_LOADER_ID) {
+            if (mMovie != null) {
+                if (data != null && data.moveToFirst()) {
+                    int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
+                    Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
+                    mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
+                    mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
+                    mIsFavorited = true;
 
-            } else {
-                Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");
-                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
+                } else {
+                    Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");
+                    mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
 
-                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
+                    mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
+                }
             }
-
+        } else if (loader.getId() == TRAILERVIDEOS_LOADER_ID) {
+            // TODO: load details; trailer videos and user reviews
         }
     }
 

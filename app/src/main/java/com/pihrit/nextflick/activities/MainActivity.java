@@ -39,7 +39,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TMDB_URL_BASE = "http://api.themoviedb.org";
+    // TODO: better place for this
+    public static final String TMDB_URL_BASE = "http://api.themoviedb.org";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 0;
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         } else if (id == R.id.action_favorite) {
             mSelectedFilter = SelectedFilter.FAVORITES;
             mMovieAdapter.setSelectedFilter(mSelectedFilter);
-            // TODO: use SQLite instead
+
             getSupportActionBar().setSubtitle(mSelectedFilter.getTitleResId());
             mMoviesRecyclerView.removeAllViews();
             mMovieAdapter.notifyDataSetChanged();
