@@ -78,6 +78,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private TrailerVideoAdapter mTrailerVideoAdapter;
     private ReviewAdapter mReviewAdapter;
+    private int mSelectedFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         Intent callingIntent = getIntent();
         if (callingIntent.hasExtra(Movie.PARCELABLE_ID)) {
+
+            if (callingIntent.hasExtra(MainActivity.SELECTED_FILTER)) {
+                mSelectedFilter = callingIntent.getIntExtra(MainActivity.SELECTED_FILTER, 0);
+            }
+
             mMovie = callingIntent.getExtras().getParcelable(Movie.PARCELABLE_ID);
             if (mMovie != null) {
                 getSupportActionBar().setTitle(mMovie.getTitle());
@@ -290,6 +296,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         } catch (ActivityNotFoundException ex) {
             this.startActivity(webIntent);
         }
+    }
 
+    @Nullable
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.putExtra(MainActivity.SELECTED_FILTER, mSelectedFilter);
+        return mainIntent;
     }
 }

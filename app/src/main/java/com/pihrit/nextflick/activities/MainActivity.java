@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     public static final String TMDB_URL_BASE = "http://api.themoviedb.org";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 0;
+    public static final String SELECTED_FILTER = "selected_filter";
 
     @BindView(R.id.rv_movies)
     RecyclerView mMoviesRecyclerView;
@@ -63,9 +65,33 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         mMovieAdapter = new MovieAdapter(this, this);
         mMoviesRecyclerView.setAdapter(mMovieAdapter);
 
-        loadMoviesFromAPI();
+        if (savedInstanceState != null) {
+            int selectedFilter = savedInstanceState.getInt(MainActivity.SELECTED_FILTER);
+            mSelectedFilter = SelectedFilter.values()[selectedFilter];
+            Log.v("selectedFilter: ", "" + selectedFilter);
+        } else {
+            Intent callingIntent = getIntent();
+            if (callingIntent != null && callingIntent.hasExtra(MainActivity.SELECTED_FILTER)) {
+                int returnedValue = callingIntent.getIntExtra(MainActivity.SELECTED_FILTER, 0);
+                mSelectedFilter = SelectedFilter.values()[returnedValue];
+            }
+        }
+
+        if (mSelectedFilter == SelectedFilter.POPULAR || mSelectedFilter == SelectedFilter.TOP_RATED) {
+            loadMoviesFromAPI();
+        } else {
+            favoriteFilterSelected();
+        }
 
         getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        int selectedFilter = mSelectedFilter.ordinal();
+        outState.putInt(MainActivity.SELECTED_FILTER, selectedFilter);
     }
 
     private void loadMoviesFromAPI() {
@@ -114,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         detailIntent.putExtra(Movie.PARCELABLE_ID, clickedMovie);
+        detailIntent.putExtra(MainActivity.SELECTED_FILTER, mSelectedFilter.ordinal());
         startActivity(detailIntent);
     }
 
@@ -138,16 +165,19 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             return true;
         } else if (id == R.id.action_favorite) {
             mSelectedFilter = SelectedFilter.FAVORITES;
-            mMovieAdapter.setSelectedFilter(mSelectedFilter);
-
-            getSupportActionBar().setSubtitle(mSelectedFilter.getTitleResId());
-            mMoviesRecyclerView.removeAllViews();
-            mMovieAdapter.notifyDataSetChanged();
-
+            favoriteFilterSelected();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void favoriteFilterSelected() {
+        mMovieAdapter.setSelectedFilter(mSelectedFilter);
+
+        getSupportActionBar().setSubtitle(mSelectedFilter.getTitleResId());
+        mMoviesRecyclerView.removeAllViews();
+        mMovieAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -205,5 +235,11 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mMovieAdapter.swapCursor(null);
+    }
+
+    @Nullable
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        return super.getSupportParentActivityIntent();
     }
 }
