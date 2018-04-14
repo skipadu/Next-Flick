@@ -11,6 +11,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
+import com.pihrit.nextflick.adapters.TrailerMovieAdapter;
 import com.pihrit.nextflick.data.FavoriteMovieContract;
 import com.pihrit.nextflick.interfaces.TmdbApi;
 import com.pihrit.nextflick.model.Movie;
@@ -56,15 +59,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     ImageView mFavoriteButtonIv;
     @BindView(R.id.tv_favorite_button)
     TextView mFavoriteButtonTv;
-    // TODO recyclerview for trailerVideos & reviews
+    @BindView(R.id.rv_detail_trailers)
+    RecyclerView mTrailerRecyclerView;
+    // TODO recyclerview for reviews
 
     private static final int FAVORITE_LOADER_ID = 1;
-    private static final int TRAILERVIDEOS_LOADER_ID = 2;
     private static final String TAG = DetailActivity.class.getSimpleName();
     private Movie mMovie;
     private Uri mFavoriteUri;
     private boolean mIsFavorited;
     private Toast mToast;
+
+    private TrailerMovieAdapter mTrailerMovieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +96,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                 mFavoriteUri = FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId());
 
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+                mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
+                mTrailerRecyclerView.setHasFixedSize(true);
+                // TODO: clicklistener
+                mTrailerMovieAdapter = new TrailerMovieAdapter(this);
+                mTrailerRecyclerView.setAdapter(mTrailerMovieAdapter);
+
+                loadTrailers();
+
                 getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
-                getSupportLoaderManager().initLoader(TRAILERVIDEOS_LOADER_ID, null, this);
                 // TODO reviews
             }
         }
@@ -106,14 +121,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         TmdbApi tmdpApiRequest = rf.create(TmdbApi.class);
         Call<TmdbJsonVideosResponse> call = tmdpApiRequest.getVideos(mMovie.getId(), BuildConfig.TMDB_API_KEY);
 
+
         call.enqueue(new Callback<TmdbJsonVideosResponse>() {
             @Override
             public void onResponse(Call<TmdbJsonVideosResponse> call, Response<TmdbJsonVideosResponse> response) {
                 if (response.isSuccessful()) {
                     List<TrailerVideo> trailerVideos = new ArrayList<>(Arrays.asList(response.body().getResults()));
-                    // TODO: set trailervideos to trailerVideo adapter
-                    // notifyChane
-
+                    mTrailerMovieAdapter.setTrailers(trailerVideos);
+                    mTrailerMovieAdapter.notifyDataSetChanged();
 
                 } else {
                     mToast = Toast.makeText(DetailActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
@@ -195,11 +210,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     super.deliverResult(data);
                 }
             };
-        } else if (id == TRAILERVIDEOS_LOADER_ID) {
-            // TODO:
         }
         return null;
-
     }
 
     @Override
@@ -220,8 +232,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
                 }
             }
-        } else if (loader.getId() == TRAILERVIDEOS_LOADER_ID) {
-            // TODO: load details; trailer videos and user reviews
         }
     }
 
