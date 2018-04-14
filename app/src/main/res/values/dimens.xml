@@ -2,7 +2,12 @@
 <resources>
     <dimen name="movie_poster_offset">4dp</dimen>
     <dimen name="margin_default">8dp</dimen>
+    <dimen name="margin_medium">4dp</dimen>
+    <dimen name="margin_small">2dp</dimen>
     <dimen name="margin_zero">0dp</dimen>
     <dimen name="border_width">1dp</dimen>
     <dimen name="border_radius">4dp</dimen>
+    <dimen name="trailer_item_height">40dp</dimen>
+    <dimen name="text_normal">12sp</dimen>
+    <dimen name="text_small">10sp</dimen>
 </resources>

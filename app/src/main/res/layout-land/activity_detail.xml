@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -59,7 +59,7 @@
             android:id="@+id/iv_btn_favorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_default"
             android:background="@drawable/border"
             android:gravity="center"
             android:orientation="horizontal"
@@ -81,7 +81,7 @@
                 android:paddingLeft="5dp"
                 android:text="@string/movie_detail_favoritebutton_like"
                 android:textAlignment="textStart"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -90,8 +90,8 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cl_top"
@@ -153,8 +153,8 @@
                 android:id="@+id/rv_detail_user_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_default"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_user_reviews_title"></android.support.v7.widget.RecyclerView>
