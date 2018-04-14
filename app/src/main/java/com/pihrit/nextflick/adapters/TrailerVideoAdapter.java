@@ -14,14 +14,14 @@ import com.pihrit.nextflick.model.TrailerVideo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrailerMovieAdapter extends RecyclerView.Adapter<TrailerMovieAdapterViewHolder> {
+public class TrailerVideoAdapter extends RecyclerView.Adapter<TrailerVideoAdapterViewHolder> {
 
     private final Context mContext;
     private final TrailerVideoItemClickListener mTrailerVideoItemClickListener;
     private List<TrailerVideo> mTrailers = new ArrayList<>();
 
 
-    public TrailerMovieAdapter(@NonNull Context context, TrailerVideoItemClickListener trailerVideoItemClickListener) {
+    public TrailerVideoAdapter(@NonNull Context context, TrailerVideoItemClickListener trailerVideoItemClickListener) {
         mContext = context;
         this.mTrailerVideoItemClickListener = trailerVideoItemClickListener;
     }
@@ -36,15 +36,15 @@ public class TrailerMovieAdapter extends RecyclerView.Adapter<TrailerMovieAdapte
 
     @NonNull
     @Override
-    public TrailerMovieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.trailermovie_item, parent, false);
-        return new TrailerMovieAdapterViewHolder(v, mTrailerVideoItemClickListener);
+    public TrailerVideoAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.trailervideo_item, parent, false);
+        return new TrailerVideoAdapterViewHolder(v, mTrailerVideoItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TrailerMovieAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TrailerVideoAdapterViewHolder holder, int position) {
         TrailerVideo trailerVideo = mTrailers.get(position);
-        holder.mTrailerMovieNameTextView.setText(trailerVideo.getName());
+        holder.mTrailerVideoNameTextView.setText(trailerVideo.getName());
     }
 
     @Override

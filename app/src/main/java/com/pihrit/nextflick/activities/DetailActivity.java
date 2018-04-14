@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
-import com.pihrit.nextflick.adapters.TrailerMovieAdapter;
+import com.pihrit.nextflick.adapters.TrailerVideoAdapter;
 import com.pihrit.nextflick.data.FavoriteMovieContract;
 import com.pihrit.nextflick.interfaces.TmdbApi;
 import com.pihrit.nextflick.interfaces.TrailerVideoItemClickListener;
@@ -72,7 +72,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private boolean mIsFavorited;
     private Toast mToast;
 
-    private TrailerMovieAdapter mTrailerMovieAdapter;
+    private TrailerVideoAdapter mTrailerVideoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +103,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
                 mTrailerRecyclerView.setHasFixedSize(true);
                 // TODO: clicklistener
-                mTrailerMovieAdapter = new TrailerMovieAdapter(this, this);
-                mTrailerRecyclerView.setAdapter(mTrailerMovieAdapter);
+                mTrailerVideoAdapter = new TrailerVideoAdapter(this, this);
+                mTrailerRecyclerView.setAdapter(mTrailerVideoAdapter);
 
                 loadTrailers();
 
@@ -129,8 +129,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onResponse(Call<TmdbJsonVideosResponse> call, Response<TmdbJsonVideosResponse> response) {
                 if (response.isSuccessful()) {
                     List<TrailerVideo> trailerVideos = new ArrayList<>(Arrays.asList(response.body().getResults()));
-                    mTrailerMovieAdapter.setTrailers(trailerVideos);
-                    mTrailerMovieAdapter.notifyDataSetChanged();
+                    mTrailerVideoAdapter.setTrailers(trailerVideos);
+                    mTrailerVideoAdapter.notifyDataSetChanged();
 
                 } else {
                     mToast = Toast.makeText(DetailActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
@@ -219,7 +219,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (loader.getId() == FAVORITE_LOADER_ID) {
             if (mMovie != null) {
                 if (data != null && data.moveToFirst()) {
-                    int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
                     mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
                     mIsFavorited = true;
@@ -241,7 +240,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     // https://stackoverflow.com/a/12439378/649474
     @Override
     public void onTrailerVideoItemClick(int itemIndex) {
-        TrailerVideo trailerVideo = mTrailerMovieAdapter.getTrailerAt(itemIndex);
+        TrailerVideo trailerVideo = mTrailerVideoAdapter.getTrailerAt(itemIndex);
         String key = trailerVideo.getKey();
 
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_app_intent) + key));

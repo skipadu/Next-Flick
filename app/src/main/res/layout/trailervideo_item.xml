@@ -33,7 +33,7 @@
             app:srcCompat="@drawable/ic_movie" />
 
         <TextView
-            android:id="@+id/tv_trailermovie_name"
+            android:id="@+id/tv_trailervideo_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/trailer_item_height"
             android:layout_marginEnd="@dimen/margin_default"

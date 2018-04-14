@@ -11,12 +11,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TrailerMovieAdapterViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.tv_trailermovie_name)
-    TextView mTrailerMovieNameTextView;
+public class TrailerVideoAdapterViewHolder extends RecyclerView.ViewHolder {
+    @BindView(R.id.tv_trailervideo_name)
+    TextView mTrailerVideoNameTextView;
     private final TrailerVideoItemClickListener mTrailerVideoItemClickListener;
 
-    public TrailerMovieAdapterViewHolder(View v, TrailerVideoItemClickListener trailerVideoItemClickListener) {
+    public TrailerVideoAdapterViewHolder(View v, TrailerVideoItemClickListener trailerVideoItemClickListener) {
         super(v);
         ButterKnife.bind(this, v);
         mTrailerVideoItemClickListener = trailerVideoItemClickListener;
