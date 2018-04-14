@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pihrit.nextflick.R;
+import com.pihrit.nextflick.interfaces.TrailerVideoItemClickListener;
 import com.pihrit.nextflick.model.TrailerVideo;
 
 import java.util.ArrayList;
@@ -16,12 +17,13 @@ import java.util.List;
 public class TrailerMovieAdapter extends RecyclerView.Adapter<TrailerMovieAdapterViewHolder> {
 
     private final Context mContext;
-    // TODO clicklistener
+    private final TrailerVideoItemClickListener mTrailerVideoItemClickListener;
     private List<TrailerVideo> mTrailers = new ArrayList<>();
 
 
-    public TrailerMovieAdapter(@NonNull Context context) {
+    public TrailerMovieAdapter(@NonNull Context context, TrailerVideoItemClickListener trailerVideoItemClickListener) {
         mContext = context;
+        this.mTrailerVideoItemClickListener = trailerVideoItemClickListener;
     }
 
     public void setTrailers(List<TrailerVideo> trailers) {
@@ -36,7 +38,7 @@ public class TrailerMovieAdapter extends RecyclerView.Adapter<TrailerMovieAdapte
     @Override
     public TrailerMovieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.trailermovie_item, parent, false);
-        return new TrailerMovieAdapterViewHolder(v);
+        return new TrailerMovieAdapterViewHolder(v, mTrailerVideoItemClickListener);
     }
 
     @Override

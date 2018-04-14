@@ -1,5 +1,6 @@
 package com.pihrit.nextflick.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ import com.pihrit.nextflick.R;
 import com.pihrit.nextflick.adapters.TrailerMovieAdapter;
 import com.pihrit.nextflick.data.FavoriteMovieContract;
 import com.pihrit.nextflick.interfaces.TmdbApi;
+import com.pihrit.nextflick.interfaces.TrailerVideoItemClickListener;
 import com.pihrit.nextflick.model.Movie;
 import com.pihrit.nextflick.model.TmdbJsonVideosResponse;
 import com.pihrit.nextflick.model.TrailerVideo;
@@ -43,7 +45,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TrailerVideoItemClickListener {
 
     @BindView(R.id.iv_detail_poster)
     ImageView mMoviePosterIv;
@@ -101,7 +103,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
                 mTrailerRecyclerView.setHasFixedSize(true);
                 // TODO: clicklistener
-                mTrailerMovieAdapter = new TrailerMovieAdapter(this);
+                mTrailerMovieAdapter = new TrailerMovieAdapter(this, this);
                 mTrailerRecyclerView.setAdapter(mTrailerMovieAdapter);
 
                 loadTrailers();
@@ -142,7 +144,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mToast.show();
             }
         });
-
     }
 
     @OnClick(R.id.iv_btn_favorite)
@@ -233,6 +234,24 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
+
+    // Looked help from the answer of Roger Garzon Nieto:
+    // https://stackoverflow.com/a/12439378/649474
+    @Override
+    public void onTrailerVideoItemClick(int itemIndex) {
+        TrailerVideo trailerVideo = mTrailerMovieAdapter.getTrailerAt(itemIndex);
+        String key = trailerVideo.getKey();
+
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_app_intent) + key));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(getString(R.string.youtube_url_start) + key));
+        try {
+            this.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            this.startActivity(webIntent);
+        }
 
     }
 }

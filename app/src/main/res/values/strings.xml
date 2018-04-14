@@ -19,4 +19,6 @@
     <string name="movie_detail_favoritebutton_like">Like</string>
     <string name="movie_detail_favoritebutton_unlike">Unlike</string>
     <string name="favorites">Favorites</string>
+    <string name="youtube_url_start" translatable="false">https://youtu.be/</string>
+    <string name="youtube_app_intent" translatable="false">vnd.youtube:</string>
 </resources>
