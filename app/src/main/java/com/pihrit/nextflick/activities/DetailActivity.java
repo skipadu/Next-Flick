@@ -188,6 +188,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @OnClick(R.id.iv_btn_favorite)
     public void onClick() {
         if (mIsFavorited) {
+            Toast.makeText(getBaseContext(), R.string.toast_removed_from_favorites, Toast.LENGTH_LONG).show();
             getContentResolver().delete(FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId()), null, null);
         } else {
             //
@@ -203,9 +204,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVoteAverage());
             Uri uri = getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, cv);
 
-            // FIXME: Just for testing purposes for now
             if (uri != null) {
-                Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), R.string.toast_added_to_favorites, Toast.LENGTH_LONG).show();
             }
         }
         finish();

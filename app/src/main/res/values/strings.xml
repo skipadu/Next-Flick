@@ -21,4 +21,6 @@
     <string name="favorites">Favorites</string>
     <string name="youtube_url_start" translatable="false">https://youtu.be/</string>
     <string name="youtube_app_intent" translatable="false">vnd.youtube:</string>
+    <string name="toast_added_to_favorites">Added to favorites!</string>
+    <string name="toast_removed_from_favorites">Removed from favorites.</string>
 </resources>
