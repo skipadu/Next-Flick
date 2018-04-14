@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TrailerVideoAdapterViewHolder extends RecyclerView.ViewHolder {
+    
     @BindView(R.id.tv_trailervideo_name)
     TextView mTrailerVideoNameTextView;
     private final TrailerVideoItemClickListener mTrailerVideoItemClickListener;

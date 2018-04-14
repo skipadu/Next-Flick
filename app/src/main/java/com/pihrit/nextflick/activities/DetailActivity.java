@@ -21,11 +21,14 @@ import android.widget.Toast;
 
 import com.pihrit.nextflick.BuildConfig;
 import com.pihrit.nextflick.R;
+import com.pihrit.nextflick.adapters.ReviewAdapter;
 import com.pihrit.nextflick.adapters.TrailerVideoAdapter;
 import com.pihrit.nextflick.data.FavoriteMovieContract;
 import com.pihrit.nextflick.interfaces.TmdbApi;
 import com.pihrit.nextflick.interfaces.TrailerVideoItemClickListener;
 import com.pihrit.nextflick.model.Movie;
+import com.pihrit.nextflick.model.Review;
+import com.pihrit.nextflick.model.TmdbJsonReviewsResponse;
 import com.pihrit.nextflick.model.TmdbJsonVideosResponse;
 import com.pihrit.nextflick.model.TrailerVideo;
 import com.pihrit.nextflick.utils.DetailUtils;
@@ -63,7 +66,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     TextView mFavoriteButtonTv;
     @BindView(R.id.rv_detail_trailers)
     RecyclerView mTrailerRecyclerView;
-    // TODO recyclerview for reviews
+    @BindView(R.id.rv_detail_user_reviews)
+    RecyclerView mReviewRecyclerView;
 
     private static final int FAVORITE_LOADER_ID = 1;
     private static final String TAG = DetailActivity.class.getSimpleName();
@@ -73,6 +77,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private Toast mToast;
 
     private TrailerVideoAdapter mTrailerVideoAdapter;
+    private ReviewAdapter mReviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,20 +103,55 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                 mFavoriteUri = FavoriteMovieContract.FavoriteMovieEntry.buildUriWithId((int) mMovie.getId());
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                LinearLayoutManager trailerVideoLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-                mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
+                mTrailerRecyclerView.setLayoutManager(trailerVideoLinearLayoutManager);
                 mTrailerRecyclerView.setHasFixedSize(true);
-                // TODO: clicklistener
                 mTrailerVideoAdapter = new TrailerVideoAdapter(this, this);
                 mTrailerRecyclerView.setAdapter(mTrailerVideoAdapter);
 
+                LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                mReviewRecyclerView.setLayoutManager(reviewLinearLayoutManager);
+                mReviewRecyclerView.setHasFixedSize(true);
+                mReviewAdapter = new ReviewAdapter(this);
+                mReviewRecyclerView.setAdapter(mReviewAdapter);
+
                 loadTrailers();
+                loadReviews();
 
                 getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
-                // TODO reviews
             }
         }
+    }
+
+    private void loadReviews() {
+        Retrofit rf = new Retrofit.Builder()
+                .baseUrl(MainActivity.TMDB_URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TmdbApi tmdbApiRequest = rf.create(TmdbApi.class);
+        Call<TmdbJsonReviewsResponse> call = tmdbApiRequest.getReviews(mMovie.getId(), BuildConfig.TMDB_API_KEY);
+
+        call.enqueue(new Callback<TmdbJsonReviewsResponse>() {
+            @Override
+            public void onResponse(Call<TmdbJsonReviewsResponse> call, Response<TmdbJsonReviewsResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Review> reviews = new ArrayList<>(Arrays.asList(response.body().getResults()));
+                    mReviewAdapter.setReviews(reviews);
+                    mReviewAdapter.notifyDataSetChanged();
+                } else {
+                    mToast = Toast.makeText(DetailActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
+                    mToast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TmdbJsonReviewsResponse> call, Throwable t) {
+                mToast = Toast.makeText(DetailActivity.this, R.string.error_failed_to_get_response_from_api, Toast.LENGTH_LONG);
+                mToast.show();
+            }
+        });
     }
 
     private void loadTrailers() {
@@ -131,7 +171,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     List<TrailerVideo> trailerVideos = new ArrayList<>(Arrays.asList(response.body().getResults()));
                     mTrailerVideoAdapter.setTrailers(trailerVideos);
                     mTrailerVideoAdapter.notifyDataSetChanged();
-
                 } else {
                     mToast = Toast.makeText(DetailActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
                     mToast.show();
