@@ -182,7 +182,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 @Override
                 public Cursor loadInBackground() {
                     try {
-                        Log.v(TAG, "loadInBackground(), mFavoriteUri: " + mFavoriteUri.toString());
                         return getContentResolver().query(mFavoriteUri,
                                 null,
                                 null,
@@ -220,15 +219,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             if (mMovie != null) {
                 if (data != null && data.moveToFirst()) {
                     int movieId = data.getInt(data.getColumnIndex(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
-                    Log.v(TAG, "onLoadFinished(), movieId: " + movieId);
                     mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
                     mIsFavorited = true;
 
                 } else {
-                    Log.v(TAG, "onLoadFinished(), movie was not found in favorites!");
                     mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
-
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
                 }
             }
