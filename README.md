@@ -29,3 +29,5 @@ This repository is for Android Developer Nanodegree program I'm participating an
 <img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/main_top_rated.png?raw=true" width="200" alt="Main-screen, top rated movies">
 
 <img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/detail.png?raw=true" width="200" alt="Detail-screen"><img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/detail_landscape.png?raw=true" width="400" alt="Detail-screen in landscape">
+
+<img src="https://github.com/skipadu/Next-Flick/raw/master/screenshots/favorites.png?raw=true" width="200" alt="Favorites-screen">
