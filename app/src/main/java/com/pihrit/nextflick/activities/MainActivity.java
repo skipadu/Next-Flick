@@ -126,9 +126,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     mMovieAdapter.setMovies(movies);
                     mMovieAdapter.notifyDataSetChanged();
 
-                    if (mLastScrollPosition > 0) {
-                        mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
-                    }
+                    mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
+
 
                 } else {
                     mToast = Toast.makeText(MainActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
@@ -167,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        mLastScrollPosition = 0;
         if (id == R.id.action_popular) {
             mSelectedFilter = SelectedFilter.POPULAR;
             mMovieAdapter.setSelectedFilter(mSelectedFilter);
@@ -243,9 +243,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mMovieAdapter.swapCursor(cursor);
 
-        if (mLastScrollPosition > 0) {
-            mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
-        }
+        mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
     }
 
     @Override
