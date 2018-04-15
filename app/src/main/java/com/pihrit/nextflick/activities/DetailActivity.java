@@ -272,7 +272,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
                     mIsFavorited = true;
-
                 } else {
                     mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
                     mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
@@ -283,7 +282,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
     }
 
     // Looked help from the answer of Roger Garzon Nieto:

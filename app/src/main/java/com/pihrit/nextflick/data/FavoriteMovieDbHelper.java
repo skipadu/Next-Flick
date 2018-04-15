@@ -34,7 +34,7 @@ public class FavoriteMovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-//         TODO: If making new version, should make appending instead of dropping all the data
+//         If making new version, should make appending instead of dropping all the data
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }

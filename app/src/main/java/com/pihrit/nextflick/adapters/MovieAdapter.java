@@ -119,13 +119,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapterViewHolder> {
         movie.setReleaseDate(getStringFromCursor(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE));
         movie.setVoteAverage(getDoubleFromCursor(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE));
 
-        // TODO: get the rest of the data from API with movie's id, if needed
-        // OR save all the data for offline for easier in this phase. Load the rest of the data ( trailers, comments in the DetailActivity )
-        //
         return movie;
     }
 
-    // TODO: create a helper to do this
     private String getStringFromCursor(String column) {
         return mCursor.getString(mCursor.getColumnIndex(column));
     }
