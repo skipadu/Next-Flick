@@ -9,7 +9,15 @@ public class FavoriteMovieContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
     public static final String PATH_FAVORITEMOVIES = "favorites";
 
+    private FavoriteMovieContract() {
+        // Hide constructor
+    }
+
     public static final class FavoriteMovieEntry implements BaseColumns {
+
+        private FavoriteMovieEntry() {
+            // Hide constructor
+        }
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITEMOVIES).build();

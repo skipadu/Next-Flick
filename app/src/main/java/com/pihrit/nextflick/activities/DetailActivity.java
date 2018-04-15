@@ -225,63 +225,59 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle loaderArgs) {
-        if (id == FAVORITE_LOADER_ID) {
-            return new AsyncTaskLoader<Cursor>(this) {
-                Cursor mFavoriteData = null;
 
-                @Nullable
-                @Override
-                public Cursor loadInBackground() {
-                    try {
-                        return getContentResolver().query(mFavoriteUri,
-                                null,
-                                null,
-                                null,
-                                null);
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to load favorite movie in async.");
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
+        return new AsyncTaskLoader<Cursor>(this) {
+            Cursor mFavoriteData = null;
 
-                @Override
-                protected void onStartLoading() {
-                    if (mFavoriteData != null) {
-                        deliverResult(mFavoriteData);
-                    } else {
-                        forceLoad();
-                    }
+            @Nullable
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return getContentResolver().query(mFavoriteUri,
+                            null,
+                            null,
+                            null,
+                            null);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to load favorite movie in async.");
+                    return null;
                 }
+            }
 
-                @Override
-                public void deliverResult(@Nullable Cursor data) {
-                    mFavoriteData = data;
-                    super.deliverResult(data);
+            @Override
+            protected void onStartLoading() {
+                if (mFavoriteData != null) {
+                    deliverResult(mFavoriteData);
+                } else {
+                    forceLoad();
                 }
-            };
-        }
-        return null;
+            }
+
+            @Override
+            public void deliverResult(@Nullable Cursor data) {
+                mFavoriteData = data;
+                super.deliverResult(data);
+            }
+        };
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == FAVORITE_LOADER_ID) {
-            if (mMovie != null) {
-                if (data != null && data.moveToFirst()) {
-                    mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
-                    mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
-                    mIsFavorited = true;
-                } else {
-                    mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
-                    mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
-                }
+        if (loader.getId() == FAVORITE_LOADER_ID && mMovie != null) {
+            if (data != null && data.moveToFirst()) {
+                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_unlike);
+                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie_empty);
+                mIsFavorited = true;
+            } else {
+                mFavoriteButtonTv.setText(R.string.movie_detail_favoritebutton_like);
+                mFavoriteButtonIv.setImageResource(R.drawable.favorite_movie);
             }
         }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        // No implementation
     }
 
     // Looked help from the answer of Roger Garzon Nieto:

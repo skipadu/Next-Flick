@@ -23,4 +23,6 @@
     <string name="youtube_app_intent" translatable="false">vnd.youtube:</string>
     <string name="toast_added_to_favorites">Added to favorites!</string>
     <string name="toast_removed_from_favorites">Removed from favorites.</string>
+    <string name="movie_detail_like_or_unlike_the_movie">Like or Unlike the movie</string>
+    <string name="movie_detail_trailer_video">Trailer video</string>
 </resources>

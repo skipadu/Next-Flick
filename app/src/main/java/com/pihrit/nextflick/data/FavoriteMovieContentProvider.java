@@ -84,18 +84,17 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         Uri returnUri;
 
-        switch (match) {
-            case FAVORITES:
-                long id = db.insert(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, null, contentValues);
-                if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, id);
-                } else {
-                    throw new android.database.SQLException(("Failed to insert new row into " + uri));
-                }
-                break;
-            default:
-                throw new UnsupportedOperationException("Unkown uri: " + uri);
+        if (match == FAVORITES) {
+            long id = db.insert(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, null, contentValues);
+            if (id > 0) {
+                returnUri = ContentUris.withAppendedId(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, id);
+            } else {
+                throw new android.database.SQLException(("Failed to insert new row into " + uri));
+            }
+        } else {
+            throw new UnsupportedOperationException("Unkown uri: " + uri);
         }
+
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
@@ -107,13 +106,11 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         int favoritesDeleted;
 
-        switch (match) {
-            case FAVORITE_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                favoritesDeleted = db.delete(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?", new String[]{id});
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        if (match == FAVORITE_WITH_ID) {
+            String id = uri.getPathSegments().get(1);
+            favoritesDeleted = db.delete(FavoriteMovieContract.FavoriteMovieEntry.TABLE_NAME, FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?", new String[]{id});
+        } else {
+            throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         if (favoritesDeleted != 0) {

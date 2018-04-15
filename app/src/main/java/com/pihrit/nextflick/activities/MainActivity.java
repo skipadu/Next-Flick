@@ -217,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                             FavoriteMovieContract.FavoriteMovieEntry.COLUMN_TIMESTAMP);
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to load data async.");
-                    e.printStackTrace();
                     return null;
                 }
             }
