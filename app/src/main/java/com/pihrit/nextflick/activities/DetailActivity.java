@@ -78,7 +78,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private TrailerVideoAdapter mTrailerVideoAdapter;
     private ReviewAdapter mReviewAdapter;
-    private int mSelectedFilter;
+    private int mMainSelectedFilter;
+    private int mMainLastScrollPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (callingIntent.hasExtra(Movie.PARCELABLE_ID)) {
 
             if (callingIntent.hasExtra(MainActivity.SELECTED_FILTER)) {
-                mSelectedFilter = callingIntent.getIntExtra(MainActivity.SELECTED_FILTER, 0);
+                mMainSelectedFilter = callingIntent.getIntExtra(MainActivity.SELECTED_FILTER, 0);
+            }
+
+            if (callingIntent.hasExtra(MainActivity.LAST_SCROLL_POSITION)) {
+                mMainLastScrollPosition = callingIntent.getIntExtra(MainActivity.LAST_SCROLL_POSITION, 0);
             }
 
             mMovie = callingIntent.getExtras().getParcelable(Movie.PARCELABLE_ID);
@@ -302,7 +307,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public Intent getSupportParentActivityIntent() {
         Intent mainIntent = new Intent(this, MainActivity.class);
-        mainIntent.putExtra(MainActivity.SELECTED_FILTER, mSelectedFilter);
+        mainIntent.putExtra(MainActivity.SELECTED_FILTER, mMainSelectedFilter);
+        mainIntent.putExtra(MainActivity.LAST_SCROLL_POSITION, mMainLastScrollPosition);
         return mainIntent;
     }
 }

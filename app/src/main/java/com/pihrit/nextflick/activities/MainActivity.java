@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -40,18 +39,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
-    // TODO: better place for this
     public static final String TMDB_URL_BASE = "http://api.themoviedb.org";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 0;
     public static final String SELECTED_FILTER = "selected_filter";
+    public static final String LAST_SCROLL_POSITION = "last_scroll_position";
 
     @BindView(R.id.rv_movies)
     RecyclerView mMoviesRecyclerView;
 
+    private GridLayoutManager mGridLayoutManager;
     private MovieAdapter mMovieAdapter;
     private Toast mToast;
     private SelectedFilter mSelectedFilter = SelectedFilter.POPULAR;
+    private int mLastScrollPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movie_grid_column_span_count));
-        mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
+        mGridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movie_grid_column_span_count));
+        mMoviesRecyclerView.setLayoutManager(mGridLayoutManager);
         mMoviesRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this, this);
         mMoviesRecyclerView.setAdapter(mMovieAdapter);
@@ -68,12 +69,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         if (savedInstanceState != null) {
             int selectedFilter = savedInstanceState.getInt(MainActivity.SELECTED_FILTER);
             mSelectedFilter = SelectedFilter.values()[selectedFilter];
-            Log.v("selectedFilter: ", "" + selectedFilter);
+            mLastScrollPosition = savedInstanceState.getInt(MainActivity.LAST_SCROLL_POSITION);
         } else {
             Intent callingIntent = getIntent();
             if (callingIntent != null && callingIntent.hasExtra(MainActivity.SELECTED_FILTER)) {
                 int returnedValue = callingIntent.getIntExtra(MainActivity.SELECTED_FILTER, 0);
                 mSelectedFilter = SelectedFilter.values()[returnedValue];
+            }
+            if (callingIntent != null && callingIntent.hasExtra(MainActivity.LAST_SCROLL_POSITION)) {
+                mLastScrollPosition = callingIntent.getIntExtra(MainActivity.LAST_SCROLL_POSITION, 0);
             }
         }
 
@@ -92,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         int selectedFilter = mSelectedFilter.ordinal();
         outState.putInt(MainActivity.SELECTED_FILTER, selectedFilter);
+        int position = mGridLayoutManager.findFirstVisibleItemPosition();
+        outState.putInt(MainActivity.LAST_SCROLL_POSITION, position);
     }
 
     private void loadMoviesFromAPI() {
@@ -120,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     mMovieAdapter.setMovies(movies);
                     mMovieAdapter.notifyDataSetChanged();
 
+                    if (mLastScrollPosition > 0) {
+                        mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
+                    }
+
                 } else {
                     mToast = Toast.makeText(MainActivity.this, R.string.error_response_from_api_not_successful, Toast.LENGTH_LONG);
                     mToast.show();
@@ -141,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         detailIntent.putExtra(Movie.PARCELABLE_ID, clickedMovie);
         detailIntent.putExtra(MainActivity.SELECTED_FILTER, mSelectedFilter.ordinal());
+
+        int position = mGridLayoutManager.findFirstVisibleItemPosition();
+        detailIntent.putExtra(MainActivity.LAST_SCROLL_POSITION, position);
+
         startActivity(detailIntent);
     }
 
@@ -224,12 +238,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             }
         };
 
-
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mMovieAdapter.swapCursor(cursor);
+
+        if (mLastScrollPosition > 0) {
+            mGridLayoutManager.smoothScrollToPosition(mMoviesRecyclerView, null, mLastScrollPosition);
+        }
     }
 
     @Override
@@ -237,9 +254,4 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         mMovieAdapter.swapCursor(null);
     }
 
-    @Nullable
-    @Override
-    public Intent getSupportParentActivityIntent() {
-        return super.getSupportParentActivityIntent();
-    }
 }
